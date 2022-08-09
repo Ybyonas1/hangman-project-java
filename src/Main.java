@@ -8,8 +8,11 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
-        Scanner scanner = new Scanner(new File("/Users/yonaswoldemichael/Documents/hangmanwords.txt"));
         Scanner keyboard = new Scanner(System.in);
+
+        System.out.println("1 or 2 players?");
+
+        Scanner scanner = new Scanner(new File("/Users/yonaswoldemichael/Documents/hangmanwords.txt"));
 
         List<String> words = new ArrayList<>();
 
@@ -23,10 +26,20 @@ public class Main {
 
         List<Character> playerGuesses = new ArrayList<>();
 
-
+        int wrongCount = 0;
         while (true) {
-        printWordState(word, playerGuesses);
-            getPlayerGuess(keyboard, word, playerGuesses);
+
+            printHangedMan(wrongCount);
+
+            if (wrongCount >= 6) {
+                System.out.println("You Lose!");
+                break;
+            }
+
+            printWordState(word, playerGuesses);
+            if (!getPlayerGuess(keyboard, word, playerGuesses)) {
+                wrongCount++;
+            };
 
         if (printWordState(word, playerGuesses)) {
             System.out.println("You Win!");
@@ -40,14 +53,41 @@ public class Main {
                 System.out.println("Incorrect entry, try again");
             };
         }
-        System.out.println("You Win!");
+//        System.out.println("You Win!");
     }
 
-    private static void getPlayerGuess(Scanner keyboard, String word, List<Character> playerGuesses) {
+    private static void printHangedMan(int wrongCount) {
+        System.out.println("-------");
+        System.out.println("  |    |");
+        if (wrongCount >= 1) {
+            System.out.println("  O");
+        }
+        if (wrongCount >= 2) {
+            System.out.print("\\ ");
+            if (wrongCount >= 3) {
+                System.out.println("  /");
+            }
+        }
+        if (wrongCount >= 4) {
+            System.out.println("  |");
+        }
+        if (wrongCount >= 5) {
+            System.out.print("/ ");
+            if (wrongCount >= 6) {
+                System.out.println("  \\");
+            }
+            else {
+                System.out.println("");
+            }
+        }
+    }
+
+    private static boolean getPlayerGuess(Scanner keyboard, String word, List<Character> playerGuesses) {
         System.out.println("Please enter a letter:");
         String letterGuess = keyboard.nextLine();
         playerGuesses.add(letterGuess.charAt(0));
 
+        return  word.contains(letterGuess);
     }
 
     private static boolean printWordState(String word, List<Character> playerGuesses) {
