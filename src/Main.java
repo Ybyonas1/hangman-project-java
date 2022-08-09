@@ -11,18 +11,31 @@ public class Main {
         Scanner keyboard = new Scanner(System.in);
 
         System.out.println("1 or 2 players?");
+        String player = keyboard.nextLine();
 
-        Scanner scanner = new Scanner(new File("/Users/yonaswoldemichael/Documents/hangmanwords.txt"));
+        String word;
 
-        List<String> words = new ArrayList<>();
+        if (player.equals("1")) {
 
-        while (scanner.hasNext()) {
-            words.add(scanner.nextLine());
-        }
+            Scanner scanner = new Scanner(new File("/Users/yonaswoldemichael/Documents/hangmanwords.txt"));
 
-        Random rand = new Random();
-        String word = words.get(rand.nextInt(words.size()));
-        System.out.println(word);
+            List<String> words = new ArrayList<>();
+
+            while (scanner.hasNext()) {
+                words.add(scanner.nextLine());
+            }
+
+            Random rand = new Random();
+            word = words.get(rand.nextInt(words.size()));
+
+        } else {
+            System.out.println("Player 1, please enter your word");
+            word = keyboard.nextLine();
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            System.out.println("Ready for player 2, goodluck");
+        };
+
+//        System.out.println(word);
 
         List<Character> playerGuesses = new ArrayList<>();
 
@@ -33,6 +46,7 @@ public class Main {
 
             if (wrongCount >= 6) {
                 System.out.println("You Lose!");
+                System.out.println("The word was " + word + "!");
                 break;
             }
 
